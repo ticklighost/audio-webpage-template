@@ -1,2 +1,3 @@
 # audio-webpage-template
-Template for an audio-based webpage
+
+The purpose of this project is to create and maintain and an easy-to-use template for creating audio-based websites.
