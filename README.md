@@ -3,7 +3,9 @@
 The purpose of this project is to create and maintain and an easy-to-use template for creating audio-based websites.
 
 default.html - landing page
+
 sun_castle.html - main part of site, with audio player and navigation
+
 about.html - about page
 
 Right now the files are strict copies of the protoype site at http://www.futureforever.net/sun_castle. 
