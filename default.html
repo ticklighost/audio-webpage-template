@@ -1,0 +1,576 @@
+<!doctype html> 
+<html> 
+<head>
+    
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+
+<title>sun castle</title> 
+
+<style type="text/css"> 
+
+/* make background black and text yellow */
+
+body {
+        background-color: black;
+        color: yellow;    
+}
+
+/* make hyperlink text yellow and remove underline */
+
+a {
+    color: yellow;
+    text-decoration: none;
+}
+
+/* styling for "please turn up volume" intro text */
+
+#text_div {
+    width: 800px; 
+height: 600px; 
+position: absolute; 
+top: 50%; 
+left: 50%; 
+margin-left: -400px; 
+margin-top: -160px;
+text-align: center;
+font:78px helvetica;
+line-height: 125%;
+}
+
+/* styling for all sections after intro */
+
+#main_div { 
+width: 800px; 
+height: 600px; 
+position: absolute; 
+top: 50%;   
+left: 50%; 
+margin-left: -400px; 
+margin-top: -200px;
+text-align: center;
+display: none;
+} 
+
+/* makes animation timer wait to start until all assets have loaded */
+
+.js-loading *,
+.js-loading *:before,
+.js-loading *:after {
+  animation-play-state: paused !important;
+}
+
+/* styling for audio player */
+
+#player {
+ width: 50%;
+ height: 120px;
+}​
+
+/* animation to make buttons fade in, with cross-browser support */
+
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.fade-in {
+    opacity:0;
+    -webkit-animation:fadeIn ease-in 1;
+    -moz-animation:fadeIn ease-in 1;
+    animation:fadeIn ease-in 1;
+
+    -webkit-animation-fill-mode:forwards; 
+    -moz-animation-fill-mode:forwards;
+    animation-fill-mode:forwards;
+
+    -webkit-animation-duration:2s;
+    -moz-animation-duration:2s;
+    animation-duration:2s;
+    
+    -webkit-animation-delay: 23s;
+    -moz-animation-delay: 23s;
+    animation-delay: 23s;
+    
+    outline: 0 none;
+}
+
+</style>
+
+</head> 
+
+<body> 
+
+<!--script to prevent phones from locking whiel playing-->
+
+<script src="libraries/NoSleep.js" type="text/javascript">
+</script>
+
+<!-- intro text "please turn up volume" this div is swapped out when done -->
+
+<div id="text_div" onclick="swapDiv()">
+
+please turn up volume
+<br><br>
+click or tap when ready
+    
+</div>
+
+<!--
+this div is the template for all of the audio sections.
+each audio section has a corresponding function below,
+which swaps out the audio and buttons as needed.
+-->
+
+<div id="main_div">
+    
+<!-- audio player -->
+
+	<audio id="player">
+        <source id="ogg_src" src="audio/calibration_v3.ogg" type="audio/ogg">
+        <source id="mp3_src" src="audio/calibration_v3.mp3" type="audio/mp3">
+            Your browser does not support HTML5 audio. 
+            <br>Click <a href="suncastle.bandcamp.com">here</a> to listen another way.
+	</audio>
+
+	<br><br>
+	
+<!-- button 1 -->
+
+    <input class="fade-in" id="btn1" type="image" src="images/enter.png" onclick="welcome()"/>
+    
+    <p>
+        
+<!-- button 2 -->
+    
+    <input class="fade-in" id="btn2" type="image" src="images/replay.png" onclick="x.play()"/>
+
+</div>
+
+<script>
+
+/* start javascript section, containing functions to swap out the audio and button images, as well as a few other functions */
+
+/* script to prevent phone screens from locking */
+
+var noSleep = new NoSleep();
+
+function enableNoSleep() {
+  noSleep.enable();
+  document.removeEventListener('click', enableNoSleep, false);
+}
+
+document.addEventListener('click', enableNoSleep, false);
+
+/* declares variable x for audio player element */
+
+var x = document.getElementById("player");
+
+/* function to reaplce intro text div with main template div */
+
+function swapDiv() {
+    var td = document.getElementById('text_div');
+    var md = document.getElementById('main_div');
+    td.parentNode.replaceChild(md, td);
+    
+    document.getElementById('main_div').style.display = 'block';
+    
+    x.play();
+}
+
+/* function to take listener back to intro page when they click 'leave' */
+
+function leave() {
+    document.location.href="http://futureforever.net/sun_castle/about.html";
+}
+
+/* 
+welcome section
+i will comment in detail on the first few sections
+the remainder perform the same actions  
+*/
+
+function welcome() {
+    
+/* 
+clones and replaces button elements
+seemed necessary to get the animation timer to start over 
+*/ 
+        
+    var elm = document.getElementById('btn1');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+
+    var elm = document.getElementById('btn2');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+    
+/* replaces button images */
+
+    document.getElementById("btn1").src = "images/move_forward.png";
+    document.getElementById("btn2").src = "images/leave.png";
+    
+/* resets button fade in time */
+    
+    document.getElementById("btn1").style.WebkitAnimationDelay = "85s";
+    document.getElementById("btn1").style.MozAnimationDelay = "85s";
+    document.getElementById("btn1").style.animationDelay = "85s";
+    document.getElementById("btn2").style.WebkitAnimationDelay = "85s";
+    document.getElementById("btn2").style.MozAnimationDelay = "85s";
+    document.getElementById("btn2").style.animationDelay = "85s";
+    
+/* replaces the audio files and loads them */
+    
+    document.getElementById("ogg_src").src = "audio/welcome_v5_combined.ogg";
+    document.getElementById("mp3_src").src = "audio/welcome_v5_combined.mp3";
+    document.getElementById("player").load();
+    
+/* defines what happens when buttons are clicked */
+
+    document.getElementById("btn1").onclick = environs;
+    document.getElementById("btn2").onclick = leave;
+    
+/* plays audio */
+    
+    x.play();
+}
+
+function environs() {
+        
+    var elm = document.getElementById('btn1');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+
+    var elm = document.getElementById('btn2');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+    
+    document.getElementById("btn1").src = "images/black.png";
+    document.getElementById("btn2").src = "images/black.png";
+    
+    /* disables buttons for audio-only sections */
+
+    document.getElementById('btn1').disabled = true;
+    document.getElementById('btn2').disabled = true;
+    
+    document.getElementById("ogg_src").src = "audio/environs1.ogg";
+    document.getElementById("mp3_src").src = "audio/environs1.mp3";
+    x.load();
+
+    document.getElementById("btn1").onclick = environs_break;
+    document.getElementById("btn2").onclick = leave;
+
+    /* plays audio, loads next section when audio is finished */
+
+    x.play();
+    x.onended = function() { environs_break(); };
+}
+
+function environs_break() {
+    
+    var elm = document.getElementById('btn1');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+
+    var elm = document.getElementById('btn2');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+    
+    /* re-enables buttons for sections with buttons */
+            
+    document.getElementById('btn1').disabled = false;
+    document.getElementById('btn2').disabled = false;
+    
+    document.getElementById("btn1").src = "images/keep_going.png";
+    document.getElementById("btn2").src = "images/head_back.png";
+        
+    document.getElementById("btn1").style.WebkitAnimationDelay = "18s";
+    document.getElementById("btn1").style.MozAnimationDelay = "18s";
+    document.getElementById("btn1").style.animationDelay = "18s";
+    document.getElementById("btn2").style.WebkitAnimationDelay = "18s";
+    document.getElementById("btn2").style.MozAnimationDelay = "18s";
+    document.getElementById("btn2").style.animationDelay = "18s";
+    
+    document.getElementById("ogg_src").src = "audio/environs_break_v3.ogg";
+    document.getElementById("mp3_src").src = "audio/environs_break_v3.mp3";
+    document.getElementById("player").load();
+
+    document.getElementById("btn1").onclick = environs2;
+    document.getElementById("btn2").onclick = leave;
+    
+    x.play();
+    x.onended = function() { x.pause(); };
+}
+
+function environs2() {
+    
+    document.getElementById("btn1").src = "images/black.png";
+    document.getElementById("btn2").src = "images/black.png";
+    
+    document.getElementById('btn1').disabled = true;
+    document.getElementById('btn2').disabled = true;
+    
+    document.getElementById("ogg_src").src = "audio/environs2.ogg";
+    document.getElementById("mp3_src").src = "audio/environs2.mp3";
+    document.getElementById("player").load();
+    
+    document.getElementById("btn1").onclick = wall;
+    document.getElementById("btn2").onclick = leave;
+
+    x.play();
+    x.onended = function() { wall(); };
+}
+
+function wall() {
+            
+    var elm = document.getElementById('btn1');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+
+    var elm = document.getElementById('btn2');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+    
+    document.getElementById('btn1').disabled = false;
+    document.getElementById('btn2').disabled = false;
+    
+    document.getElementById("btn1").src = "images/touch_wall.png";
+    document.getElementById("btn2").src = "images/leave.png";
+        
+    document.getElementById("btn1").style.WebkitAnimationDelay = "29s";
+    document.getElementById("btn1").style.MozAnimationDelay = "29s";
+    document.getElementById("btn1").style.animationDelay = "29s";
+    document.getElementById("btn2").style.WebkitAnimationDelay = "29s";
+    document.getElementById("btn2").style.MozAnimationDelay = "29s";
+    document.getElementById("btn2").style.animationDelay = "29s";
+    
+    document.getElementById("ogg_src").src = "audio/wall_v3.ogg";
+    document.getElementById("mp3_src").src = "audio/wall_v3.mp3";
+    document.getElementById("player").load();
+    
+    document.getElementById("btn1").onclick = portal;
+    document.getElementById("btn2").onclick = leave;
+    
+    x.play();
+    x.onended = function() { x.pause(); };
+}
+
+function portal() {
+
+    document.getElementById('btn1').disabled = true;
+    document.getElementById('btn2').disabled = true;
+    
+    document.getElementById("ogg_src").src = "audio/portal.ogg";
+    document.getElementById("mp3_src").src = "audio/portal.mp3";
+    x.load();
+    
+    document.getElementById("btn1").onclick = inside;
+    document.getElementById("btn2").onclick = leave;
+    
+    document.getElementById("btn1").src = "images/black.png";
+    document.getElementById("btn2").src = "images/black.png";
+    
+    x.play();
+    x.onended = function() { inside(); };
+}
+
+function inside() {
+            
+    var elm = document.getElementById('btn1');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+
+    var elm = document.getElementById('btn2');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+                
+    document.getElementById('btn1').disabled = false;
+    document.getElementById('btn2').disabled = false;
+        
+    document.getElementById("btn1").style.WebkitAnimationDelay = "10s";
+    document.getElementById("btn1").style.MozAnimationDelay = "10s";
+    document.getElementById("btn1").style.animationDelay = "10s";
+    document.getElementById("btn2").style.WebkitAnimationDelay = "10s";
+    document.getElementById("btn2").style.MozAnimationDelay = "10s";
+    document.getElementById("btn2").style.animationDelay = "10s";
+    
+    document.getElementById("ogg_src").src = "audio/inside.ogg";
+    document.getElementById("mp3_src").src = "audio/inside.mp3";
+    document.getElementById("player").load();
+    
+    document.getElementById("btn1").src = "images/walk_down.png";
+    document.getElementById("btn2").src = "images/leave.png";
+    
+    document.getElementById("btn1").onclick = hallway;
+    document.getElementById("btn2").onclick = leave;
+    
+    x.play();
+    x.onended = function() { x.pause(); };
+}
+
+function hallway() {
+            
+
+    document.getElementById('btn1').disabled = true;
+    document.getElementById('btn2').disabled = true;
+    
+    document.getElementById("ogg_src").src = "audio/hallway_v2.ogg";
+    document.getElementById("mp3_src").src = "audio/hallway_v2.mp3";
+    x.load();
+    
+    document.getElementById("btn1").onclick = r1k;
+    document.getElementById("btn2").onclick = leave;
+    
+    document.getElementById("btn1").src = "images/black.png";
+    document.getElementById("btn2").src = "images/black.png";
+    
+    x.play();
+    x.onended = function() { r1k(); };
+}
+
+function r1k() {
+            
+    var elm = document.getElementById('btn1');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+
+    var elm = document.getElementById('btn2');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+                
+    document.getElementById('btn1').disabled = false;
+    document.getElementById('btn2').disabled = false;
+        
+    document.getElementById("btn1").style.WebkitAnimationDelay = "20s";
+    document.getElementById("btn1").style.MozAnimationDelay = "20s";
+    document.getElementById("btn1").style.animationDelay = "20s";
+    document.getElementById("btn2").style.WebkitAnimationDelay = "20s";
+    document.getElementById("btn2").style.MozAnimationDelay = "20s";
+    document.getElementById("btn2").style.animationDelay = "20s";
+    
+    document.getElementById("ogg_src").src = "audio/r1k_v2.ogg";
+    document.getElementById("mp3_src").src = "audio/r1k_v2.mp3";
+    document.getElementById("player").load();
+    
+    document.getElementById("btn1").src = "images/open_door.png";
+    document.getElementById("btn2").src = "images/leave.png";
+    
+    document.getElementById("btn1").onclick = r1kd1;
+    document.getElementById("btn2").onclick = leave;
+    
+    x.play();
+    x.onended = function() { x.pause(); };
+}
+
+function r1kd1() {
+            
+
+    document.getElementById('btn1').disabled = true;
+    document.getElementById('btn2').disabled = true;
+    
+    document.getElementById("ogg_src").src = "audio/r1k1.ogg";
+    document.getElementById("mp3_src").src = "audio/r1k1.mp3";
+    x.load();
+    
+    document.getElementById("btn1").onclick = r1k_return2;
+    document.getElementById("btn2").onclick = leave;
+    
+    document.getElementById("btn1").src = "images/black.png";
+    document.getElementById("btn2").src = "images/black.png";
+    
+    x.play();
+    x.onended = function() { r1k_return2(); };
+}
+
+function r1k_return2() {
+            
+    var elm = document.getElementById('btn1');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+
+    var elm = document.getElementById('btn2');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+                
+    document.getElementById('btn1').disabled = false;
+    document.getElementById('btn2').disabled = false;
+        
+    document.getElementById("btn1").style.WebkitAnimationDelay = "20s";
+    document.getElementById("btn1").style.MozAnimationDelay = "20s";
+    document.getElementById("btn1").style.animationDelay = "20s";
+    document.getElementById("btn2").style.WebkitAnimationDelay = "20s";
+    document.getElementById("btn2").style.MozAnimationDelay = "20s";
+    document.getElementById("btn2").style.animationDelay = "20s";
+    
+    document.getElementById("ogg_src").src = "audio/r1k_return2.ogg";
+    document.getElementById("mp3_src").src = "audio/r1k_return2.mp3";
+    document.getElementById("player").load();
+    
+    document.getElementById("btn1").src = "images/enter_portal.png";
+    document.getElementById("btn2").src = "images/leave.png";
+    
+    document.getElementById("btn1").onclick = r1k_portal;
+    document.getElementById("btn2").onclick = leave;
+    
+    x.play();
+    x.onended = function() { x.pause(); };
+}
+
+function r1k_portal() {
+
+    document.getElementById('btn1').disabled = true;
+    document.getElementById('btn2').disabled = true;
+    
+    document.getElementById("ogg_src").src = "audio/r1k_portal_v4.ogg";
+    document.getElementById("mp3_src").src = "audio/r1k_portal_v4.mp3";
+    x.load();
+    
+    document.getElementById("btn1").onclick = grand_return;
+    document.getElementById("btn2").onclick = leave;
+    
+    document.getElementById("btn1").src = "images/black.png";
+    document.getElementById("btn2").src = "images/black.png";
+    
+    x.play();
+    x.onended = function() { grand_return(); };
+}
+
+function grand_return() {
+            
+    var elm = document.getElementById('btn1');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+
+    var elm = document.getElementById('btn2');
+    var newone = elm.cloneNode(true);
+    elm.parentNode.replaceChild(newone, elm);
+                
+    document.getElementById('btn1').disabled = false;
+    document.getElementById('btn2').disabled = false;
+        
+    document.getElementById("btn1").style.WebkitAnimationDelay = "10s";
+    document.getElementById("btn1").style.MozAnimationDelay = "10s";
+    document.getElementById("btn1").style.animationDelay = "10s";
+    document.getElementById("btn2").style.WebkitAnimationDelay = "10s";
+    document.getElementById("btn2").style.MozAnimationDelay = "10s";
+    document.getElementById("btn2").style.animationDelay = "10s";
+    
+    document.getElementById("ogg_src").src = "audio/grand_return_v2.ogg";
+    document.getElementById("mp3_src").src = "audio/grand_return_v2.mp3";
+    document.getElementById("player").load();
+    
+    document.getElementById("btn1").src = "images/leave.png";
+    document.getElementById("btn2").src = "images/black.png";
+    
+    document.getElementById("btn1").onclick = leave;
+    document.getElementById("btn2").onclick = leave;
+    
+    x.play();
+    x.onended = function() { x.pause(); };
+    
+    noSleep.disable();
+}
+
+</script>
+
+</body>
+
+</html>
