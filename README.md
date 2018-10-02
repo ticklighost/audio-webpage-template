@@ -6,7 +6,7 @@ The relevant files are:
 
 default.html - landing page
 
-sun_castle.html - main part of site, with audio player and navigation
+sun_castle.html - main part of site
 
 about.html - about page
 
