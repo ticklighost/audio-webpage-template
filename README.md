@@ -4,11 +4,11 @@ The purpose of this project is to create and maintain and an easy-to-use templat
 
 The relevant files are:
 
+about.html - about page
+
 default.html - landing page
 
 sun_castle.html - main part of site
-
-about.html - about page
 
 Right now the files are strict copies of the protoype site at http://www.futureforever.net/sun_castle. 
 
