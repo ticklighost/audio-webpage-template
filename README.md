@@ -14,6 +14,6 @@ Right now the files are strict copies of the protoype site at http://www.futuref
 
 I will be generalizing these shortly into more of a template format.
 
-I use the nosleep.js library by Rich Tibbetts to keep the enable wake lock on the mobile version, otherwise screen lock breaks it.
+I use the <a href="https://github.com/richtr/NoSleep.js">nosleep.js</a> library by Rich Tibbetts to keep the enable wake lock on the mobile version, otherwise screen lock breaks it. Thanks Rich!
 
-https://github.com/richtr/NoSleep.js
+
